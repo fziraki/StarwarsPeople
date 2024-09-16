@@ -1,4 +1,4 @@
-package com.example.starwarspeople.character_list
+package com.example.starwarspeople.features.character.search_character
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -16,16 +17,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun CharacterListScreen(
-    viewModel: CharacterListViewModel = hiltViewModel()
+fun SearchScreen(
+    viewModel: SearchViewModel = hiltViewModel()
 ){
 
     val searchText by viewModel.searchText.collectAsState()
-    val persons by viewModel.persons.collectAsState()
+    val characters by viewModel.characterList.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
     Column(
         modifier = Modifier
@@ -43,7 +45,8 @@ fun CharacterListScreen(
         if(isSearching) {
             Box(modifier = Modifier.fillMaxSize()) {
                 CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    color = Color.DarkGray
                 )
             }
         } else {
@@ -52,14 +55,17 @@ fun CharacterListScreen(
                     .fillMaxWidth()
                     .weight(1f)
             ) {
-                items(persons) { person ->
+
+                itemsIndexed(characters, key = {index, item -> (index+1) }){ index, item ->
                     Text(
-                        text = "${person.firstName} ${person.lastName}",
+                        text = item.name,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 16.dp)
+                            .padding(vertical = 16.dp),
+                        color = Color.Blue
                     )
                 }
+
             }
         }
     }
