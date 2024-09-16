@@ -52,21 +52,11 @@ data class CharacterDto(
     fun toCharacter(): Character{
         return Character(
             birthYear = birthYear,
-            created = created,
-            edited = edited,
-            eyeColor = eyeColor,
             films = films.map { it },
-            gender = gender,
-            hairColor = hairColor,
             height = height,
-            homeworld = homeworld,
-            mass = mass,
             name = name,
-            skinColor = skinColor,
             species = species.map { it },
-            starships = starships.map { it },
-            url = url,
-            vehicles = vehicles.map { it }
+            url = url
         )
     }
 

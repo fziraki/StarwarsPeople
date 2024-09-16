@@ -3,6 +3,10 @@ package com.example.starwarspeople.features.character.di
 import com.example.starwarspeople.features.character.data.remote.StarwarsPeopleApi
 import com.example.starwarspeople.features.character.data.repository.StarwarsPeopleRepositoryImpl
 import com.example.starwarspeople.features.character.domain.repository.StarwarsPeopleRepository
+import com.example.starwarspeople.features.character.domain.use_case.GetCharacterDetailsUseCase
+import com.example.starwarspeople.features.character.domain.use_case.GetFilmUseCase
+import com.example.starwarspeople.features.character.domain.use_case.GetHomeWorldUseCase
+import com.example.starwarspeople.features.character.domain.use_case.GetSpecieUseCase
 import com.example.starwarspeople.features.character.domain.use_case.SearchCharacterUseCase
 import dagger.Module
 import dagger.Provides
@@ -14,6 +18,30 @@ import retrofit2.Retrofit
 @Module
 @InstallIn(ViewModelComponent::class)
 object CharacterModule {
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetFilmUseCase(starwarsPeopleRepository: StarwarsPeopleRepository): GetFilmUseCase {
+        return GetFilmUseCase(starwarsPeopleRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetHomeWorldUseCase(starwarsPeopleRepository: StarwarsPeopleRepository): GetHomeWorldUseCase {
+        return GetHomeWorldUseCase(starwarsPeopleRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetSpeciesUseCase(starwarsPeopleRepository: StarwarsPeopleRepository): GetSpecieUseCase {
+        return GetSpecieUseCase(starwarsPeopleRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetCharacterDetailsUseCase(starwarsPeopleRepository: StarwarsPeopleRepository): GetCharacterDetailsUseCase {
+        return GetCharacterDetailsUseCase(starwarsPeopleRepository)
+    }
 
     @Provides
     @ViewModelScoped

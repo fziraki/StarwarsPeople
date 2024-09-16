@@ -24,7 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun SearchScreen(
-    onCharacterClicked: () -> Unit,
+    onCharacterClicked: (url: String) -> Unit,
     viewModel: SearchViewModel = hiltViewModel()
 ){
 
@@ -58,11 +58,11 @@ fun SearchScreen(
                     .weight(1f)
             ) {
 
-                itemsIndexed(characters, key = {index, item -> (index+1) }){ index, item ->
+                itemsIndexed(characters, key = {index, item -> item.url?:index }){ index, item ->
                     Text(
-                        text = item.name,
+                        text = item.name?:"",
                         modifier = Modifier.clickable {
-                            onCharacterClicked()
+                            item.url?.let { onCharacterClicked(it) }
                         }
                             .fillMaxWidth()
                             .padding(vertical = 16.dp),
