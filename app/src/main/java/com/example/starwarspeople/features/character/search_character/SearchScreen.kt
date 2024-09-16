@@ -1,5 +1,6 @@
 package com.example.starwarspeople.features.character.search_character
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun SearchScreen(
+    onCharacterClicked: () -> Unit,
     viewModel: SearchViewModel = hiltViewModel()
 ){
 
@@ -59,7 +61,9 @@ fun SearchScreen(
                 itemsIndexed(characters, key = {index, item -> (index+1) }){ index, item ->
                     Text(
                         text = item.name,
-                        modifier = Modifier
+                        modifier = Modifier.clickable {
+                            onCharacterClicked()
+                        }
                             .fillMaxWidth()
                             .padding(vertical = 16.dp),
                         color = Color.Blue

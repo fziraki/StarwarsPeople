@@ -1,6 +1,5 @@
-package com.example.starwarspeople.common.di
+package com.example.starwarspeople
 
-import com.example.starwarspeople.Constants
 import com.example.starwarspeople.utils.ErrorHandler
 import com.example.starwarspeople.utils.GeneralErrorHandlerImpl
 import dagger.Module
