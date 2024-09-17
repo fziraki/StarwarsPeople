@@ -83,10 +83,6 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.8.0")
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.5")
-    //db
-    implementation("androidx.room:room-runtime:2.6.1")
-    ksp("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
 
     //coroutine
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
@@ -100,11 +96,6 @@ dependencies {
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
-
-
-    //image
-    implementation("io.coil-kt:coil:2.5.0")
-    implementation("io.coil-kt:coil-compose:2.5.0")
 
     //Test dependencies
     testImplementation("junit:junit:4.13.2")

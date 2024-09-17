@@ -7,8 +7,10 @@ import com.example.starwarspeople.features.character.domain.use_case.SearchChara
 import com.example.starwarspeople.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
@@ -24,6 +26,9 @@ class SearchViewModel @Inject constructor(
     @Named("DebounceTime") private val debounceTime: Long // Injected debounce time
 ): ViewModel() {
 
+    private val _message = MutableSharedFlow<String?>()
+    val message = _message.asSharedFlow()
+
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
 
@@ -31,7 +36,6 @@ class SearchViewModel @Inject constructor(
     val isSearching = _isSearching.asStateFlow()
 
     private val _characterList = MutableStateFlow<List<Character>>(emptyList())
-
 
     @OptIn(FlowPreview::class)
     val characterList = searchText
@@ -70,6 +74,9 @@ class SearchViewModel @Inject constructor(
 
                     is Resource.Error -> {
                         _isSearching.update { false }
+                        result.message?.let {
+                            _message.emit(it)
+                        }
                     }
                 }
             }

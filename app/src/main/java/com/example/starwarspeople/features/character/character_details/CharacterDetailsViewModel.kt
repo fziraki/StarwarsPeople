@@ -13,7 +13,9 @@ import com.example.starwarspeople.features.character.domain.use_case.GetHomeWorl
 import com.example.starwarspeople.features.character.domain.use_case.GetSpecieUseCase
 import com.example.starwarspeople.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,6 +28,9 @@ class CharacterDetailsViewModel @Inject constructor(
     private val getFilmUseCase: GetFilmUseCase,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
+
+    private val _message = MutableSharedFlow<String?>()
+    val message = _message.asSharedFlow()
 
     private val _details = MutableStateFlow<Character?>(null)
     val details = _details.asStateFlow()
@@ -51,6 +56,9 @@ class CharacterDetailsViewModel @Inject constructor(
             getCharacterDetailsUseCase(url).collect{ result->
                 when(result){
                     is Resource.Error -> {
+                        result.message?.let {
+                            _message.emit(it)
+                        }
                     }
                     is Resource.Loading -> {
                     }
@@ -75,6 +83,9 @@ class CharacterDetailsViewModel @Inject constructor(
             getSpecieUseCase(specie).collect{ result->
                 when(result){
                     is Resource.Error -> {
+                        result.message?.let {
+                            _message.emit(it)
+                        }
                     }
                     is Resource.Loading -> {
                     }
@@ -96,6 +107,9 @@ class CharacterDetailsViewModel @Inject constructor(
             getHomeWorldUseCase(homeworld).collect{ result->
                 when(result){
                     is Resource.Error -> {
+                        result.message?.let {
+                            _message.emit(it)
+                        }
                     }
                     is Resource.Loading -> {
                     }
@@ -116,6 +130,9 @@ class CharacterDetailsViewModel @Inject constructor(
                 getFilmUseCase(it).collect{ result->
                     when(result){
                         is Resource.Error -> {
+                            result.message?.let {
+                                _message.emit(it)
+                            }
                         }
                         is Resource.Loading -> {
                         }
