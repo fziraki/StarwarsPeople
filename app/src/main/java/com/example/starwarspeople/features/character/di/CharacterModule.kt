@@ -14,10 +14,17 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import retrofit2.Retrofit
+import javax.inject.Named
 
 @Module
 @InstallIn(ViewModelComponent::class)
 object CharacterModule {
+
+    @Named("DebounceTime")
+    @Provides
+    fun provideDebounceTime(): Long {
+        return 1000L // Default value
+    }
 
     @Provides
     @ViewModelScoped

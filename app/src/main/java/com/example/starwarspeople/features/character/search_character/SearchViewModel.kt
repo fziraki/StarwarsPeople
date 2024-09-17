@@ -16,10 +16,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val searchCharacterUseCase: SearchCharacterUseCase
+    private val searchCharacterUseCase: SearchCharacterUseCase,
+    @Named("DebounceTime") private val debounceTime: Long // Injected debounce time
 ): ViewModel() {
 
     private val _searchText = MutableStateFlow("")
@@ -33,7 +35,7 @@ class SearchViewModel @Inject constructor(
 
     @OptIn(FlowPreview::class)
     val characterList = searchText
-        .debounce(1000L)
+        .debounce(debounceTime)
         .combine(_characterList) { text, characters ->
             if(text.isBlank()) {
                 characters
@@ -53,18 +55,20 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun searchCharacter(searchedText: String) {
-        _isSearching.update { true }
         viewModelScope.launch {
             searchCharacterUseCase(searchedText).collect{ result->
                 when(result){
-                    is Resource.Error -> {
-                        _isSearching.update { false }
-                    }
+
                     is Resource.Loading -> {
                         _isSearching.update { true }
                     }
+
                     is Resource.Success -> {
                         _characterList.value = result.data?.map { it }?: emptyList()
+                        _isSearching.update { false }
+                    }
+
+                    is Resource.Error -> {
                         _isSearching.update { false }
                     }
                 }

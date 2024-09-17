@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.starwarspeople.features.character.domain.Film
 import com.example.starwarspeople.features.character.domain.HomeWorld
 import com.example.starwarspeople.features.character.domain.Specie
+import com.example.starwarspeople.utils.toFeetAndInches
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -30,6 +31,8 @@ fun CharacterDetailsScreen(
     val homeWorld by viewModel.home.collectAsState()
     val films by viewModel.films.collectAsState()
 
+    val heightInFeetAndInches = characterDetails?.height?.toInt()?.toFeetAndInches()
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp)
@@ -38,7 +41,7 @@ fun CharacterDetailsScreen(
             Label("character:")
             CustomText("name: ${characterDetails?.name}")
             CustomText("birth year: ${characterDetails?.birthYear}")
-            CustomText("height: ${characterDetails?.height} cm (${characterDetails?.height} feet)")
+            CustomText("height: ${characterDetails?.height} cm (${heightInFeetAndInches})")
             specie?.let { SpecieItem(it, homeWorld) }
             if (films.isNotEmpty()){
                 Label("films:")
